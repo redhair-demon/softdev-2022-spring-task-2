@@ -1,0 +1,35 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.6.10"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDir("test")
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+    // https://mvnrepository.com/artifact/args4j/args4j
+    implementation 'args4j:args4j:2.33'
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
