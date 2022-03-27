@@ -30,6 +30,12 @@ dependencies {
     implementation 'args4j:args4j:2.33'
 }
 
+jar {
+    manifest {
+        attributes 'MainKt': 'org.jetbrains.kotlin.Main'
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }

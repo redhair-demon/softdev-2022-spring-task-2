@@ -1,54 +1,72 @@
-import main.main
+
+import main.Tail
+import main.TailLauncher
 import org.junit.jupiter.api.Test
+import java.io.File
+import kotlin.test.assertEquals
 
 
 class TailTest {
+
+    private fun assertFileContent(name: String = "files/output.txt", expectedContent: String) {
+        val file = File(name)
+        val content = file.readLines().joinToString("\n")
+        assertEquals(expectedContent, content)
+    }
+
     @Test
-    fun test() {
-        main("tail -c 5 -o output.txt input1.txt input2.txt".split(" ").toTypedArray())
+    fun tailCmdTest() {
+        val tsar3 = "Но будет, час расплаты ждёт.\n" +
+                "Кто начал царствовать — Ходынкой,\n" +
+                "Тот кончит — встав на эшафот."
+        val tail = Tail("files/output.txt")
+        tail.tailCmd(null, nnum = 3, inFiles = listOf("files/tsar.txt"))
+        assertFileContent("files/output.txt", tsar3)
+        File("files/output.txt").delete()
+
+        tail.tailCmd(7, 10, inFiles =  listOf("files/tsar.txt"))
+        assertFileContent("files/output.txt", "эшафот.")
+        File("files/output.txt").delete()
+    }
+
+    @Test
+    fun tailLauncherTest() {
+        val tsar3 = "Но будет, час расплаты ждёт.\n" +
+                "Кто начал царствовать — Ходынкой,\n" +
+                "Тот кончит — встав на эшафот."
+        val toxictsar = "files/tsar.txt\n" +
+                "Зловонье пороха и дыма,\n" +
+                "В котором разуму — темно.\n" +
+                "Наш Царь — убожество слепое,\n" +
+                "Тюрьма и кнут, подсуд, расстрел,\n" +
+                "Царь-висельник, тем низкий вдвое,\n" +
+                "Что обещал, но дать не смел.\n" +
+                "Он трус, он чувствует с запинкой,\n" +
+                "Но будет, час расплаты ждёт.\n" +
+                "Кто начал царствовать — Ходынкой,\n" +
+                "Тот кончит — встав на эшафот.\n" +
+                "files/toxic.txt\n" +
+                "Too high, can't come down\n" +
+                "Losing my head, spinnin' 'round and 'round\n" +
+                "Do you feel me now?\n" +
+                "With a taste of your lips, I'm on a ride\n" +
+                "You're toxic, I'm slippin' under\n" +
+                "With a taste of a poison paradise\n" +
+                "I'm addicted to you\n" +
+                "Don't you know that you're toxic?\n" +
+                "And I love what you do\n" +
+                "Don't you know that you're toxic?"
+
+        TailLauncher().main("tail -n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", tsar3)
+        File("files/output.txt").delete()
+
+        TailLauncher().main("tail -c 7 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", "эшафот.")
+        File("files/output.txt").delete()
+
+        TailLauncher().main("tail -o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", toxictsar)
+        File("files/output.txt").delete()
     }
 }
-
-//@Throws(IOException::class)
-//fun doMain(args: Array<String?>) {
-//    val parser = CmdLineParser(this)
-//
-//    // if you have a wider console, you could increase the value;
-//    // here 80 is also the default
-//    parser.setUsageWidth(80)
-//    try {
-//        // parse the arguments.
-//        parser.parseArgument(*args)
-//
-//        // you can parse additional arguments if you want.
-//        // parser.parseArgument("more","args");
-//
-//        // after parsing arguments, you should check
-//        // if enough arguments are given.
-//        if (arguments.isEmpty()) throw CmdLineException(parser, "No argument is given")
-//    } catch (e: CmdLineException) {
-//        // if there's a problem in the command line,
-//        // you'll get this exception. this will report
-//        // an error message.
-//        System.err.println(e.message)
-//        System.err.println("java SampleMain [options...] arguments...")
-//        // print the list of available options
-//        parser.printUsage(System.err)
-//        System.err.println()
-//
-//        // print option sample. This is useful some time
-//        System.err.println("  Example: java SampleMain" + parser.printExample(ALL))
-//        return
-//    }
-//
-//    // this will redirect the output to the specified output
-//    System.out.println(out)
-//    if (recursive) println("-r flag is set")
-//    if (data) println("-custom flag is set")
-//    System.out.println("-str was $str")
-//    if (num >= 0) System.out.println("-n was $num")
-//
-//    // access non-option arguments
-//    println("other arguments are:")
-//    for (s in arguments) println(s)
-//}
