@@ -1,6 +1,6 @@
 
 import main.Tail
-import main.TailLauncher
+import main.main
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -57,16 +57,18 @@ class TailTest {
                 "And I love what you do\n" +
                 "Don't you know that you're toxic?"
 
-        TailLauncher().main("tail -n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+        main("-n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", tsar3)
         File("files/output.txt").delete()
 
-        TailLauncher().main("tail -c 7 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+        main("-c 7 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", "эшафот.")
         File("files/output.txt").delete()
 
-        TailLauncher().main("tail -o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
+        main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", toxictsar)
         File("files/output.txt").delete()
+
+        //main("-c -n files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
     }
 }

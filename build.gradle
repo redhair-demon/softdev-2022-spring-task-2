@@ -32,7 +32,11 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'MainKt': 'org.jetbrains.kotlin.Main'
+        attributes 'Main-Class': 'main.TailLauncherKt'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.compileClasspath.collect {it.isDirectory() ? it : zipTree(it)}
     }
 }
 
