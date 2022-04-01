@@ -1,9 +1,7 @@
 
-import main.Tail
 import main.main
 import org.junit.jupiter.api.Test
 import java.io.File
-import java.io.PrintStream
 import kotlin.test.assertEquals
 
 
@@ -13,23 +11,6 @@ class TailTest {
         val file = File(name)
         val content = file.readLines().joinToString("\n")
         assertEquals(expectedContent, content)
-    }
-
-    @Test
-    fun tailCmdTest() {
-        val tsar3 = "Но будет, час расплаты ждёт.\n" +
-                "Кто начал царствовать — Ходынкой,\n" +
-                "Тот кончит — встав на эшафот."
-        val tail = Tail(PrintStream("files/output.txt", charset("UTF-8")))
-        val tail2 = Tail(PrintStream("files/output.txt", charset("UTF-8")))
-
-        tail.tailCmd(7, 10, inFiles =  listOf("files/tsar.txt"))
-        assertFileContent("files/output.txt", "эшафот.")
-        File("files/output.txt").delete()
-
-        tail2.tailCmd(null, nnum = 3, inFiles = listOf("files/tsar.txt"))
-        assertFileContent("files/output.txt", tsar3)
-        File("files/output.txt").delete()
     }
 
     @Test
