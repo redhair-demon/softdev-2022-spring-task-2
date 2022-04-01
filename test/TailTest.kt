@@ -3,6 +3,7 @@ import main.Tail
 import main.main
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.io.PrintStream
 import kotlin.test.assertEquals
 
 
@@ -16,16 +17,19 @@ class TailTest {
 
     @Test
     fun tailCmdTest() {
+        File("files/output.txt").delete()
         val tsar3 = "Но будет, час расплаты ждёт.\n" +
                 "Кто начал царствовать — Ходынкой,\n" +
                 "Тот кончит — встав на эшафот."
-        val tail = Tail("files/output.txt")
-        tail.tailCmd(null, nnum = 3, inFiles = listOf("files/tsar.txt"))
-        assertFileContent("files/output.txt", tsar3)
-        File("files/output.txt").delete()
+        val tail = Tail(PrintStream("files/output.txt", charset("UTF-8")))
+        val tail2 = Tail(PrintStream("files/output.txt", charset("UTF-8")))
 
         tail.tailCmd(7, 10, inFiles =  listOf("files/tsar.txt"))
         assertFileContent("files/output.txt", "эшафот.")
+        File("files/output.txt").delete()
+
+        tail2.tailCmd(null, nnum = 3, inFiles = listOf("files/tsar.txt"))
+        assertFileContent("files/output.txt", tsar3)
         File("files/output.txt").delete()
     }
 
@@ -68,7 +72,5 @@ class TailTest {
         main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", toxictsar)
         File("files/output.txt").delete()
-
-        //main("-c -n files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
     }
 }

@@ -2,6 +2,8 @@ package main
 
 import java.io.File
 import java.io.IOException
+import java.io.OutputStream
+import java.io.PrintStream
 import kotlin.jvm.Throws
 
 /*
@@ -19,42 +21,29 @@ Command line: tail [-c num|-n num] [-o ofile] file0 file1 file2 …
 Если ни один из этих флагов не указан, следует вывести последние 10 строк
 */
 
-class Tail(private val outFile: String? = null) {
+class Tail(private val outputStream: PrintStream) {
 
     @Throws(IOException::class)
     fun tailCmd(cnum: Int?, nnum: Int, inFiles: List<String>?) {
-        when {
-            inFiles.isNullOrEmpty() -> {
-                val text = if (cnum == null) readLines(listOf(readln()), nnum) else readChars(readln(), cnum)
+        outputStream.use { stream ->
+            when {
+                inFiles.isNullOrEmpty() -> {
+                    val text = if (cnum == null) readLines(listOf(readln()), nnum) else readChars(readln(), cnum)
+                    text.forEach { stream.print(it) }
+                }
 
-                if (outFile.isNullOrBlank()) text.forEach { print(it) }
-                else File(outFile).bufferedWriter().use { writer -> text.forEach { writer.write(it) } }
-            }
+                inFiles.size == 1 -> {
+                    val text = if (cnum == null) readLines(File(inFiles[0]).readLines(), nnum)
+                    else readChars(File(inFiles[0]).readText(), cnum)
+                    text.forEach { stream.print(it) }
+                }
 
-            inFiles.size == 1 -> {
-                val text = if (cnum == null) readLines(File(inFiles[0]).readLines(), nnum)
-                else readChars(File(inFiles[0]).readText(), cnum)
-
-                if (outFile.isNullOrBlank()) text.forEach { print(it) }
-                else File(outFile).bufferedWriter().use { writer -> text.forEach { writer.write(it) } }
-            }
-
-            inFiles.size > 1-> {
-                if (outFile.isNullOrBlank()) {
+                else -> {   // inFiles.size > 1
                     for (file in inFiles) {
                         val text = if (cnum == null) readLines(File(file).readLines(), nnum)
                         else readChars(File(file).readText(), cnum)
-                        println(file)
-                        text.forEach { print(it) }
-                    }
-                } else {
-                    File(outFile).bufferedWriter().use { writer ->
-                        for (file in inFiles) {
-                            val text = if (cnum == null) readLines(File(file).readLines(), nnum)
-                            else readChars(File(file).readText(), cnum)
-                            writer.write("$file\n")
-                            text.forEach { writer.write(it) }
-                        }
+                        stream.println(file)
+                        text.forEach { stream.print(it) }
                     }
                 }
             }
@@ -62,6 +51,7 @@ class Tail(private val outFile: String? = null) {
     }
 
     private fun readLines(file: List<String>, number: Int): List<String> {
+        //file.forEach { name -> File(name).useLines { lines ->  } }
         val result = mutableListOf<String>()
         file.forEach { result += it + "\n" }
         return result.subList((if (number > file.size) 0 else file.size - number), file.size)
