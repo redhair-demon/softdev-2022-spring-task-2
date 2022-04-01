@@ -17,7 +17,6 @@ class TailTest {
 
     @Test
     fun tailCmdTest() {
-        File("files/output.txt").delete()
         val tsar3 = "Но будет, час расплаты ждёт.\n" +
                 "Кто начал царствовать — Ходынкой,\n" +
                 "Тот кончит — встав на эшафот."
