@@ -4,6 +4,7 @@ import org.kohsuke.args4j.Option
 import org.kohsuke.args4j.Argument
 import org.kohsuke.args4j.CmdLineException
 import org.kohsuke.args4j.CmdLineParser
+import java.io.File
 import java.io.IOException
 import java.io.PrintStream
 
@@ -34,7 +35,7 @@ class TailLauncher {
             return
         }
 
-        val tail = Tail(if (outFile.isNullOrBlank()) consoleStream else PrintStream(outFile, charset("UTF-8")))
+        val tail = Tail(if (outFile.isNullOrBlank()) consoleStream else File(outFile).outputStream()) // PrintStream(outFile, "UTF-8"))
         try {
             tail.tailCmd(cnum, nnum, inFiles)
         } catch (e: IOException) {
