@@ -40,17 +40,35 @@ class TailTest {
                 "Don't you know that you're toxic?\n" +
                 "And I love what you do\n" +
                 "Don't you know that you're toxic?"
+        val toxic = "Too high, can't come down\n" +
+                "Losing my head, spinnin' 'round and 'round\n" +
+                "Do you feel me now?\n" +
+                "With a taste of your lips, I'm on a ride\n" +
+                "You're toxic, I'm slippin' under\n" +
+                "With a taste of a poison paradise\n" +
+                "I'm addicted to you\n" +
+                "Don't you know that you're toxic?\n" +
+                "And I love what you do\n" +
+                "Don't you know that you're toxic?"
 
-        main("-n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
-        assertFileContent("files/output.txt", tsar3)
+//        main("-n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+//        assertFileContent("files/output.txt", tsar3)
+//        File("files/output.txt").delete()
+
+        main("-c 7 -o files/output.txt files/toxic.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", " toxic?")
         File("files/output.txt").delete()
+
+//        main("-o files/output.txt files/toxic.txt".split(" ").toTypedArray())
+//        assertFileContent("files/output.txt", toxic)
+//        File("files/output.txt").delete()
 
         main("-c 7 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", "эшафот.")
         File("files/output.txt").delete()
 
-        main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
-        assertFileContent("files/output.txt", toxictsar)
-        File("files/output.txt").delete()
+//        main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
+//        assertFileContent("files/output.txt", toxictsar)
+//        File("files/output.txt").delete()
     }
 }
