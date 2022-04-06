@@ -51,24 +51,24 @@ class TailTest {
                 "And I love what you do\n" +
                 "Don't you know that you're toxic?"
 
-//        main("-n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
-//        assertFileContent("files/output.txt", tsar3)
-//        File("files/output.txt").delete()
+        main("-n 3 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", tsar3)
+        File("files/output.txt").delete()
 
         main("-c 7 -o files/output.txt files/toxic.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", " toxic?")
         File("files/output.txt").delete()
 
-//        main("-o files/output.txt files/toxic.txt".split(" ").toTypedArray())
-//        assertFileContent("files/output.txt", toxic)
-//        File("files/output.txt").delete()
+        main("-o files/output.txt files/toxic.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", toxic)
+        File("files/output.txt").delete()
 
         main("-c 7 -o files/output.txt files/tsar.txt".split(" ").toTypedArray())
         assertFileContent("files/output.txt", "эшафот.")
         File("files/output.txt").delete()
 
-//        main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
-//        assertFileContent("files/output.txt", toxictsar)
-//        File("files/output.txt").delete()
+        main("-o files/output.txt files/tsar.txt files/toxic.txt".split(" ").toTypedArray())
+        assertFileContent("files/output.txt", toxictsar)
+        File("files/output.txt").delete()
     }
 }

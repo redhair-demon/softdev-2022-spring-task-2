@@ -34,7 +34,7 @@ class TailLauncher {
             return
         }
 
-        val tail = Tail(if (outFile.isNullOrBlank()) consoleStream else PrintStream(outFile, charset("")))
+        val tail = Tail(if (outFile.isNullOrBlank()) consoleStream else PrintStream(outFile, Charsets.UTF_8))
         try {
             tail.tailCmd(cnum, nnum, inFiles)
         } catch (e: IOException) {
